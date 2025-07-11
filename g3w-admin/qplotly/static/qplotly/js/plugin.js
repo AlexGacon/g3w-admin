@@ -28,26 +28,22 @@
 
       super({ name: 'qplotly' });
 
-      // i18n
-      const VM = new Vue();
-      const i18n = async lang => {
+      GUI.on('i18-ready', async (lang) => {
         this.#SIDEBAR?.setLoading(true);
         this.setLocale({ [lang]: (await import(`${BASE_URL}/i18n/${lang}.js`)).default });
         this.#SIDEBAR?.setLoading(false);
-      };
-
-      VM.$watch(() => ApplicationState.language, i18n);
+      });
 
       // state of plugin
       this.state = Vue.observable({
-        loading:    false, // loading purpose
-        showCharts: false, // show/hide charts
-        geolayer:   false, // is geolayer
+        loading:     false, // loading purpose
+        showCharts:  false, // show/hide charts
+        geolayer:    false, // is geolayer
         bbox_filter: false,
-        bbox_ids: [],    // plot ids associated to bbox (moveend event)
-        bbox_key: null,  // Openlayers key event for map `moveend`
-        bbox: undefined, // custom request param
-        rel:  null,      // relation data
+        bbox_ids:    [],    // plot ids associated to bbox (moveend event)
+        bbox_key:    null,  // Openlayers key event for map `moveend`
+        bbox:        undefined, // custom request param
+        rel:         null,      // relation data
       });
 
       // loop over plots
@@ -139,8 +135,6 @@
         if (!this.registerPlugin(this.config.gid)) {
           return;
         }
-
-        await i18n(ApplicationState.language);
 
         // multi plot selector
         const sidebar = this.#SIDEBAR = this.createSideBarComponent({
