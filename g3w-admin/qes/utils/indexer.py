@@ -503,6 +503,7 @@ class QGISElasticsearchIndexer:
                 index=self.index_name,
                 body={
                     "query": query,
+                    "sort": { "layer_id": { "order": "asc" } },
                     "size": size,
                     "highlight": {
                         "fields": {
